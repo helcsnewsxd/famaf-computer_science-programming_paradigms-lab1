@@ -20,6 +20,7 @@ initial' (c : cs) n =
     then initial c 400
     else initial' cs n
 
+-- el primer argumento es el nombre del dibujo
 main :: IO ()
 main = do
   args <- getArgs
