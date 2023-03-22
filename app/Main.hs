@@ -12,6 +12,7 @@ configs :: [Conf]
 configs = [ejemploConf]
 
 -- Dibuja el dibujo n
+-- Busca el dibujo
 initial' :: [Conf] -> String -> IO ()
 initial' [] n = do
   putStrLn $ "No hay un dibujo llamado " ++ n

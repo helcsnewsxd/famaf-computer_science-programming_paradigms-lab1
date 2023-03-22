@@ -33,13 +33,12 @@ interpConf (Conf _ p) x y = p (0, 0) (x, 0) (0, y)
 -- archivos, tomar argumentos, etc.
 initial :: Conf -> Float -> IO ()
 initial cfg size = do
-  let n = name cfg
-      win = InWindow n (ceiling size, ceiling size) (0, 0)
-  display win white $ withGrid (interpConf cfg size size) size size
-  where
+    let n = name cfg
+        win = InWindow n (ceiling size, ceiling size) (0, 0)
+    display win white $ withGrid (interpConf cfg size size) size size
     -- argumento magico que no se usa: y
     --               |
     --               v
-    withGrid p x y = translate (-size / 2) (-size / 2) $ pictures [p, greyGrid x]
-    grey = makeColorI 120 120 120 120
-    greyGrid x = color grey $ grid (ceiling $ size / 10) (0, 0) x 10
+  where withGrid p x y = translate (-size/2) (-size/2) $ pictures [p, greyGrid x]
+        grey = makeColorI 120 120 120 120
+        greyGrid x = color grey $ grid (ceiling $ size / 10) (0, 0) x 10

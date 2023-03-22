@@ -25,41 +25,56 @@ where
 
 {-
 Gramática de las figuras:
+<<<<<<< HEAD
 <Fig> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
+=======
+<Dibujo> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
+>>>>>>> 5cb508f (Completar tipos en Dibujo y otras cosas)
     | Apilar <Float> <Float> <Fig> <Fig>
     | Juntar <Float> <Float> <Fig> <Fig>
     | Encimar <Fig> <Fig>
 -}
 
-data Dibujo a = Borrar -- Completar
+data Dibujo a
+  = Figura a
+  | Rotar (Dibujo a)
+  | Espejar (Dibujo a)
+  | Rot45 (Dibujo a)
+  | Apilar Float Float (Dibujo a) (Dibujo a)
+  | Juntar Float Float (Dibujo a) (Dibujo a)
+  | Encimar (Dibujo a) (Dibujo a)
   deriving (Eq, Show)
 
 -- Agreguen los tipos y definan estas funciones
 
 -- Construcción de dibujo. Abstraen los constructores.
 
-figura = undefined
+figura = Figura
 
-rotar = undefined
+rotar = Rotar
 
-espejar = undefined
+espejar = Espejar
 
-rot45 = undefined
+rot45 = Rot45
 
-apilar = undefined
+apilar = Apilar
 
-juntar = undefined
+juntar = Juntar
 
-encimar = undefined
+encimar = Encimar
 
 -- Rotaciones de múltiplos de 90.
-r180 = undefined
+r180 = rotar . rotar
+
+comp :: (a -> a) -> Int -> a -> a
+comp f 1 = f
+comp f i = f . comp f (i-1)
 
 r270 :: Dibujo a -> Dibujo a
-r270 = undefined
+r270 = comp rotar 3
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
-(.-.) = undefined
+(.-.) = apilar
 
 -- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
 (///) = undefined
