@@ -1,26 +1,38 @@
 {-# LANGUAGE LambdaCase #-}
-module Dibujo (
-    Dibujo,
-    figura, rotar, espejar, rot45, apilar, juntar, encimar,
-    r180, r270,
-    (.-.), (///), (^^^),
-    cuarteto, encimar4, ciclar,
-    foldDib, mapDib,
-    figuras
-) where
 
+module Dibujo
+  ( Dibujo,
+    figura,
+    rotar,
+    espejar,
+    rot45,
+    apilar,
+    juntar,
+    encimar,
+    r180,
+    r270,
+    (.-.),
+    (///),
+    (^^^),
+    cuarteto,
+    encimar4,
+    ciclar,
+    foldDib,
+    mapDib,
+    figuras,
+  )
+where
 
 {-
 Gramática de las figuras:
 <Fig> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
-    | Apilar <Float> <Float> <Fig> <Fig> 
-    | Juntar <Float> <Float> <Fig> <Fig> 
+    | Apilar <Float> <Float> <Fig> <Fig>
+    | Juntar <Float> <Float> <Fig> <Fig>
     | Encimar <Fig> <Fig>
 -}
 
-
 data Dibujo a = Borrar -- Completar
-    deriving (Eq, Show)
+  deriving (Eq, Show)
 
 -- Agreguen los tipos y definan estas funciones
 
@@ -39,7 +51,6 @@ apilar = undefined
 juntar = undefined
 
 encimar = undefined
-
 
 -- Rotaciones de múltiplos de 90.
 r180 = undefined
@@ -66,13 +77,18 @@ encimar4 = undefined
 -- No confundir con encimar4!
 ciclar = undefined
 
--- Estructura general para la semántica (a no asustarse). Ayuda: 
+-- Estructura general para la semántica (a no asustarse). Ayuda:
 -- pensar en foldr y las definiciones de Floatro a la lógica
-foldDib :: (a -> b) -> (b -> b) -> (b -> b) -> (b -> b) ->
-       (Float -> Float -> b -> b -> b) -> 
-       (Float -> Float -> b -> b -> b) -> 
-       (b -> b -> b) ->
-       Dibujo a -> b
+foldDib ::
+  (a -> b) ->
+  (b -> b) ->
+  (b -> b) ->
+  (b -> b) ->
+  (Float -> Float -> b -> b -> b) ->
+  (Float -> Float -> b -> b -> b) ->
+  (b -> b -> b) ->
+  Dibujo a ->
+  b
 foldDib = undefined
 
 -- Demostrar que `mapDib figura = id`

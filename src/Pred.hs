@@ -1,14 +1,18 @@
-module Pred (
-  Pred,
-  cambiar, anyDib, allDib, orP, andP
-) where
+module Pred
+  ( Pred,
+    cambiar,
+    anyDib,
+    allDib,
+    orP,
+    andP,
+  )
+where
 
 type Pred a = a -> Bool
 
 -- Dado un predicado sobre básicas, cambiar todas las que satisfacen
 -- el predicado por la figura básica indicada por el segundo argumento.
 cambiar = undefined
-
 
 -- Alguna básica satisface el predicado.
 anyDib = undefined
