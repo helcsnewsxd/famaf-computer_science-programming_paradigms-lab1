@@ -25,11 +25,7 @@ where
 
 {-
 Gramática de las figuras:
-<<<<<<< HEAD
-<Fig> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
-=======
 <Dibujo> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
->>>>>>> 5cb508f (Completar tipos en Dibujo y otras cosas)
     | Apilar <Float> <Float> <Fig> <Fig>
     | Juntar <Float> <Float> <Fig> <Fig>
     | Encimar <Fig> <Fig>
@@ -76,7 +72,7 @@ r180 = rotar . rotar
 
 comp :: (a -> a) -> Int -> a -> a
 comp f 1 = f
-comp f i = f . comp f (i-1)
+comp f i = f . comp f (i - 1)
 
 r270 :: Dibujo a -> Dibujo a
 r270 = comp rotar 3
@@ -117,7 +113,13 @@ foldDib = undefined
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib = undefined
+mapDib f (Figura a) = Figura (f a)
+mapDib f (Rotar d) = Rotar (mapDib f d)
+mapDib f (Espejar d) = Espejar (mapDib f d)
+mapDib f (Rot45 d) = Rot45 (mapDib f d)
+mapDib f (Apilar x y d1 d2) = Apilar x y (mapDib f d1) (mapDib f d2)
+mapDib f (Juntar x y d1 d2) = Juntar x y (mapDib f d1) (mapDib f d2)
+mapDib f (Encimar d1 d2) = Encimar (mapDib f d1) (mapDib f d2)
 
 -- Junta todas las figuras básicas de un dibujo.
 figuras = undefined
