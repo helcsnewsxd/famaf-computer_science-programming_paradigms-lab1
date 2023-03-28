@@ -82,20 +82,25 @@ r270 = comp rotar 3
 (.-.) = apilar
 
 -- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
-(///) = undefined
+(///) :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
+(///) = juntar
 
 -- Superpone una figura con otra.
-(^^^) = undefined
+(^^^) :: Dibujo a -> Dibujo a -> Dibujo a
+(^^^) = encimar
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
-cuarteto = undefined
+cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
+cuarteto p q r s = (.-.) 1 1 ((///) 1 1 p q) ((///) 1 1 r s) 
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
-encimar4 = undefined
+encimar4 :: Dibujo a -> Dibujo a
+encimar4 p = (^^^) (r270 p) ((^^^) (r180 p) ((^^^) (comp rotar 1 p) p ))
 
 -- Cuadrado con la misma figura rotada i * 90, para i ∈ {0, ..., 3}.
 -- No confundir con encimar4!
-ciclar = undefined
+ciclar :: Dibujo a -> Dibujo a
+ciclar p = cuarteto p (comp rotar 1 p) (r180 p) (r270 p)
 
 -- Estructura general para la semántica (a no asustarse). Ayuda:
 -- pensar en foldr y las definiciones de Floatro a la lógica
