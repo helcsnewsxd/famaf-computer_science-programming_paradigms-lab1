@@ -49,21 +49,29 @@ data Dibujo a
 
 -- Construcción de dibujo. Abstraen los constructores.
 
+figura :: a -> Dibujo a
 figura = Figura
 
+rotar :: Dibujo a -> Dibujo a
 rotar = Rotar
 
+espejar :: Dibujo a -> Dibujo a
 espejar = Espejar
 
+rot45 :: Dibujo a -> Dibujo a
 rot45 = Rot45
 
+apilar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
 apilar = Apilar
 
+juntar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
 juntar = Juntar
 
+encimar :: Dibujo a -> Dibujo a -> Dibujo a
 encimar = Encimar
 
 -- Rotaciones de múltiplos de 90.
+r180 :: Dibujo a -> Dibujo a
 r180 = rotar . rotar
 
 comp :: (a -> a) -> Int -> a -> a
@@ -74,6 +82,7 @@ r270 :: Dibujo a -> Dibujo a
 r270 = comp rotar 3
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
+(.-.) :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
 (.-.) = apilar
 
 -- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
