@@ -25,11 +25,7 @@ where
 
 {-
 Gramática de las figuras:
-<<<<<<< HEAD
-<Fig> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
-=======
 <Dibujo> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
->>>>>>> 5cb508f (Completar tipos en Dibujo y otras cosas)
     | Apilar <Float> <Float> <Fig> <Fig>
     | Juntar <Float> <Float> <Fig> <Fig>
     | Encimar <Fig> <Fig>
