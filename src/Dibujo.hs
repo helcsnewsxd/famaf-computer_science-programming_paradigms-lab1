@@ -118,7 +118,7 @@ foldDib = undefined
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib f (Figura a) = Figura (f a)
+mapDib f (Figura a) = f a
 mapDib f (Rotar d) = Rotar (mapDib f d)
 mapDib f (Espejar d) = Espejar (mapDib f d)
 mapDib f (Rot45 d) = Rot45 (mapDib f d)
