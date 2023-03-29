@@ -66,13 +66,13 @@ juntar = Juntar
 encimar :: Dibujo a -> Dibujo a -> Dibujo a
 encimar = Encimar
 
+comp :: (a -> a) -> Int -> a -> a
+comp f 1 x = f x
+comp f n x = comp f (n-1) (f x)
+
 -- Rotaciones de múltiplos de 90.
 r180 :: Dibujo a -> Dibujo a
-r180 = rotar . rotar
-
-comp :: (a -> a) -> Int -> a -> a
-comp f 1 = f
-comp f i = f . comp f (i - 1)
+r180 = comp rotar 2
 
 r270 :: Dibujo a -> Dibujo a
 r270 = comp rotar 3
