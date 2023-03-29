@@ -103,7 +103,7 @@ ciclar :: Dibujo a -> Dibujo a
 ciclar p = cuarteto p (comp rotar 1 p) (r180 p) (r270 p)
 
 -- Estructura general para la semántica (a no asustarse). Ayuda:
--- pensar en foldr y las definiciones de Floatro a la lógica
+-- pensar en foldr y las definiciones de Intro a la lógica
 foldDib ::
   (a -> b) ->
   (b -> b) ->
@@ -118,13 +118,13 @@ foldDib = undefined
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib f (Figura a) = f a
-mapDib f (Rotar d) = Rotar (mapDib f d)
-mapDib f (Espejar d) = Espejar (mapDib f d)
-mapDib f (Rot45 d) = Rot45 (mapDib f d)
-mapDib f (Apilar x y d1 d2) = Apilar x y (mapDib f d1) (mapDib f d2)
-mapDib f (Juntar x y d1 d2) = Juntar x y (mapDib f d1) (mapDib f d2)
-mapDib f (Encimar d1 d2) = Encimar (mapDib f d1) (mapDib f d2)
+-- mapDib f (Figura a) = f a --> VER DE RESOLVER
+mapDib f (Rotar a) = Rotar (mapDib f a)
+mapDib f (Espejar a) = Espejar (mapDib f a)
+mapDib f (Rot45 a) = Rot45 (mapDib f a)
+mapDib f (Apilar p1 p2 a b) = Apilar p1 p2 (mapDib f a) (mapDib f b)
+mapDib f (Juntar p1 p2 a b) = Juntar p1 p2 (mapDib f a) (mapDib f b)
+mapDib f (Encimar a b) = Encimar (mapDib f a) (mapDib f b)
 
 -- Junta todas las figuras básicas de un dibujo.
 figuras = undefined
