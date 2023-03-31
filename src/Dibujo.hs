@@ -41,8 +41,6 @@ data Dibujo a
   | Encimar (Dibujo a) (Dibujo a)
   deriving (Eq, Show)
 
--- Agreguen los tipos y definan estas funciones
-
 -- Construcción de dibujo. Abstraen los constructores.
 
 figura :: a -> Dibujo a
@@ -68,7 +66,7 @@ encimar = Encimar
 
 comp :: (a -> a) -> Int -> a -> a
 comp f 1 x = f x
-comp f n x = comp f (n-1) (f x)
+comp f n x = comp f (n - 1) (f x)
 
 -- Rotaciones de múltiplos de 90.
 r180 :: Dibujo a -> Dibujo a
@@ -91,19 +89,19 @@ r270 = comp rotar 3
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto p q r s = (.-.) 1 1 ((///) 1 1 p q) ((///) 1 1 r s) 
+cuarteto p q r s = (.-.) 1 1 ((///) 1 1 p q) ((///) 1 1 r s)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
-encimar4 p = (^^^) (r270 p) ((^^^) (r180 p) ((^^^) (comp rotar 1 p) p ))
+encimar4 p = (^^^) (r270 p) ((^^^) (r180 p) ((^^^) (comp rotar 1 p) p))
 
 -- Cuadrado con la misma figura rotada i * 90, para i ∈ {0, ..., 3}.
 -- No confundir con encimar4!
 ciclar :: Dibujo a -> Dibujo a
 ciclar p = cuarteto p (comp rotar 1 p) (r180 p) (r270 p)
 
--- Estructura general para la semántica (a no asustarse). Ayuda:
--- pensar en foldr y las definiciones de Intro a la lógica
+-- Estructura general para la semántica
+-- Aplico las funciones a cada "nodo" de la estructura del dibujo para devolver un valor
 foldDib ::
   (a -> b) ->
   (b -> b) ->
@@ -123,6 +121,9 @@ foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Juntar n1 n2 a b) = f_j
 foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Encimar a b) = f_encim (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim b)
 
 -- Demostrar que `mapDib figura = id`
+-- mapDib aplica la función f a todas las figuras (el dato) del Dibujo a para convertirlo en un dibujo b
+-- Por ej.: si tenemos a = Encimar (Figura Rectangulo) (Figura Triangulo), y f una función que cambia Rectángulo a Círculo, entonces
+-- mapDib f a va a ser igual a --> Encimar (Figura Circulo) (Figura Triangulo)
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
 mapDib f (Figura a) = f a
 mapDib f (Rotar a) = Rotar (mapDib f a)
