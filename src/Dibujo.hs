@@ -76,12 +76,12 @@ r270 :: Dibujo a -> Dibujo a
 r270 = comp rotar 3
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
-(.-.) :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
-(.-.) = apilar
+(.-.) :: Dibujo a -> Dibujo a -> Dibujo a
+(.-.) = apilar 1 1
 
 -- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
-(///) :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
-(///) = juntar
+(///) :: Dibujo a -> Dibujo a -> Dibujo a
+(///) = juntar 1 1
 
 -- Superpone una figura con otra.
 (^^^) :: Dibujo a -> Dibujo a -> Dibujo a
@@ -89,7 +89,7 @@ r270 = comp rotar 3
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto p q r s = (.-.) 1 1 ((///) 1 1 p q) ((///) 1 1 r s)
+cuarteto p q r s = (.-.) ((///) p q) ((///) r s)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
@@ -102,9 +102,6 @@ ciclar p = cuarteto p (comp rotar 1 p) (r180 p) (r270 p)
 
 -- Estructura general para la semántica
 -- Aplico las funciones a cada "nodo" de la estructura del dibujo para devolver un valor
--- Básicamente, foldDib tiene una función de tipo fold para aplicar a cada parte del Dibujo
--- Luego, para cada Constructor tenemos definida una función que se va a aplicar en esa parte
--- Por ejemplo, si estamos en (Rotar (Figura Rectangulo)), se va a aplicar sólo la función f_rot
 foldDib ::
   (a -> b) ->
   (b -> b) ->
@@ -137,9 +134,14 @@ mapDib f (Juntar p1 p2 a b) = Juntar p1 p2 (mapDib f a) (mapDib f b)
 mapDib f (Encimar a b) = Encimar (mapDib f a) (mapDib f b)
 
 -- Junta todas las figuras básicas de un dibujo.
--- Se usaron funciones lambda para facilitar la implementación
--- (: []) es equivalente a: "Dado a, devuelvo [a]"
--- (\ _ _ a b -> a++b) es equivalente a: "Dados dos enteros (que no me importan) y dos listas a, b, devuelvo a++b"
--- (++) es equivalente a: "Dadas dos listas a, b, devuelvo a++b"
+figurArray :: a -> [a]
+figurArray a = [a]
+
+figurArrayJuntar :: [a] -> [a] -> [a]
+figurArrayJuntar a b = a ++ b
+
+figurArrayJuntar2 :: Float -> Float -> [a] -> [a] -> [a]
+figurArrayJuntar2 _ _ a b = a ++ b
+
 figuras :: Dibujo a -> [a]
-figuras = foldDib (: []) id id id (\ _ _ a b -> a++b) (\ _ _ a b -> a++b) (++)
+figuras = foldDib figurArray id id id figurArrayJuntar2 figurArrayJuntar2 figurArrayJuntar
