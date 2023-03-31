@@ -25,3 +25,4 @@ andP = undefined
 
 -- Algún predicado se cumple para el elemento recibido.
 orP = undefined
+
