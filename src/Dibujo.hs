@@ -114,11 +114,17 @@ foldDib ::
   (b -> b -> b) ->
   Dibujo a ->
   b
-foldDib = undefined
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Figura a) = f_fig a
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Rotar a) = f_rot (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Espejar a) = f_esp (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Rot45 a) = f_rot45 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Apilar n1 n2 a b) = f_apil n1 n2 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim b)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Juntar n1 n2 a b) = f_junt n1 n2 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim b)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Encimar a b) = f_encim (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim b)
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
--- mapDib f (Figura a) = f a --> VER DE RESOLVER
+mapDib f (Figura a) = f a
 mapDib f (Rotar a) = Rotar (mapDib f a)
 mapDib f (Espejar a) = Espejar (mapDib f a)
 mapDib f (Rot45 a) = Rot45 (mapDib f a)
@@ -127,4 +133,14 @@ mapDib f (Juntar p1 p2 a b) = Juntar p1 p2 (mapDib f a) (mapDib f b)
 mapDib f (Encimar a b) = Encimar (mapDib f a) (mapDib f b)
 
 -- Junta todas las figuras básicas de un dibujo.
-figuras = undefined
+figurArray :: a -> [a]
+figurArray a = [a]
+
+figurArrayJuntar :: [a] -> [a] -> [a]
+figurArrayJuntar a b = a ++ b
+
+figurArrayJuntar2 :: Float -> Float -> [a] -> [a] -> [a]
+figurArrayJuntar2 _ _ a b = a ++ b
+
+figuras :: Dibujo a -> [a]
+figuras = foldDib figurArray id id id figurArrayJuntar2 figurArrayJuntar2 figurArrayJuntar
