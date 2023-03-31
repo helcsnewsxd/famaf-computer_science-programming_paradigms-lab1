@@ -76,12 +76,12 @@ r270 :: Dibujo a -> Dibujo a
 r270 = comp rotar 3
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
-(.-.) :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
-(.-.) = apilar
+(.-.) :: Dibujo a -> Dibujo a -> Dibujo a
+(.-.) = apilar 1 1
 
 -- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
-(///) :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
-(///) = juntar
+(///) :: Dibujo a -> Dibujo a -> Dibujo a
+(///) = juntar 1 1
 
 -- Superpone una figura con otra.
 (^^^) :: Dibujo a -> Dibujo a -> Dibujo a
@@ -89,7 +89,7 @@ r270 = comp rotar 3
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto p q r s = (.-.) 1 1 ((///) 1 1 p q) ((///) 1 1 r s)
+cuarteto p q r s = (.-.) ((///) p q) ((///) r s)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
