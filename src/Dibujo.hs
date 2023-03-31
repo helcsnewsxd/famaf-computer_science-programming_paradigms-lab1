@@ -102,6 +102,9 @@ ciclar p = cuarteto p (comp rotar 1 p) (r180 p) (r270 p)
 
 -- Estructura general para la semántica
 -- Aplico las funciones a cada "nodo" de la estructura del dibujo para devolver un valor
+-- Básicamente, foldDib tiene una función de tipo fold para aplicar a cada parte del Dibujo
+-- Luego, para cada Constructor tenemos definida una función que se va a aplicar en esa parte
+-- Por ejemplo, si estamos en (Rotar (Figura Rectangulo)), se va a aplicar sólo la función f_rot
 foldDib ::
   (a -> b) ->
   (b -> b) ->
@@ -134,14 +137,9 @@ mapDib f (Juntar p1 p2 a b) = Juntar p1 p2 (mapDib f a) (mapDib f b)
 mapDib f (Encimar a b) = Encimar (mapDib f a) (mapDib f b)
 
 -- Junta todas las figuras básicas de un dibujo.
-figurArray :: a -> [a]
-figurArray a = [a]
-
-figurArrayJuntar :: [a] -> [a] -> [a]
-figurArrayJuntar a b = a ++ b
-
-figurArrayJuntar2 :: Float -> Float -> [a] -> [a] -> [a]
-figurArrayJuntar2 _ _ a b = a ++ b
-
+-- Se usaron funciones lambda para facilitar la implementación
+-- (: []) es equivalente a: "Dado a, devuelvo [a]"
+-- (\ _ _ a b -> a++b) es equivalente a: "Dados dos enteros (que no me importan) y dos listas a, b, devuelvo a++b"
+-- (++) es equivalente a: "Dadas dos listas a, b, devuelvo a++b"
 figuras :: Dibujo a -> [a]
-figuras = foldDib figurArray id id id figurArrayJuntar2 figurArrayJuntar2 figurArrayJuntar
+figuras = foldDib (: []) id id id (\ _ _ a b -> a++b) (\ _ _ a b -> a++b) (++)
