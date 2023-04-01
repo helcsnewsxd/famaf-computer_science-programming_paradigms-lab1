@@ -14,8 +14,29 @@ import Graphics.Gloss (Display (InWindow), Picture, color, display, makeColorI, 
 
 -- Interpretación de un dibujo
 -- formulas sacadas del enunciado
+-- Le permite al usuario interpretar dibujos cuando el solo sabe interpretar sus figuras basicas
+-- El problema es como combinar floating pics devueltas por llamadas recursivas dependiendo del caso recursivo
+-- Como no tenemos acceso constructores, tenemos que usar foldDib
 interp :: Output a -> Output (Dibujo a)
-interp = undefined
+interp interpBas = foldDib interpBas interpRot interpEsp interpRot45 interpApil interpJuntar interpEncim
+
+interpRot :: FloatingPic -> FloatingPic
+interpRot = id
+
+interpEsp :: FloatingPic -> FloatingPic
+interpEsp = id
+
+interpRot45 :: FloatingPic -> FloatingPic
+interpRot45 = id
+
+interpApil :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
+interpApil = undefined
+
+interpJuntar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
+interpJuntar = undefined
+
+interpEncim :: FloatingPic -> FloatingPic -> FloatingPic 
+interpEncim = undefined
 
 -- Configuración de la interpretación
 -- Basicamente un dibujo
