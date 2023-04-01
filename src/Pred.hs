@@ -16,20 +16,12 @@ import Dibujo
 -- figura es `Triangulo`.
 type Pred a = a -> Bool
 
--- La función cambiar recorre recursivamente todo el dibujo usando la función foldDib.
--- A medida que va recorriendo, genera un nuevo dibujo, cambiando aquellas figuras básicas que
--- cumplan con el pred_a con la función f. Como se genera un nuevo dibujo, se usa f_rot, f_esp, etc
--- para construir el nuevo dibujo con las figuras básicas cambiadas (o no, según corresponda)
+-- cambia todas las figuras de un dibujo aplicandoles la función que se pasa como argumento siempre
+-- y cuando se cumpla el predicado
 cambiar :: Pred a -> (a -> Dibujo a) -> Dibujo a -> Dibujo a
-cambiar pred_a f = foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim
-  where -- where sirve para definir las variables que se usan arriba
-    f_fig a = if pred_a a then f a else figura a -- si se cumple pred_a, se transforma la figura básica
-    f_rot = rotar                                -- si no se cumple, se deja la figura a
-    f_esp = espejar
-    f_rot45 = rot45
-    f_apil = apilar
-    f_junt = juntar
-    f_encim = encimar
+cambiar pred_a f = mapDib f_fig
+  where
+    f_fig a = if pred_a a then f a else figura a
 
 -- Alguna básica satisface el predicado.
 -- Análogo al funcionamiento de allDib, se aplica f_pred en cada figura del Dibujo a.
