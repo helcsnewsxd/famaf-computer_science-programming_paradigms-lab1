@@ -14,13 +14,14 @@ import FloatingPic (FloatingPic, Output, grid, half, zero)
 import Graphics.Gloss (Display (InWindow), Picture, Vector, color, display, makeColorI, pictures, translate, white)
 
 -- Interpretación de un dibujo
--- formulas sacadas del enunciado
 -- Le permite al usuario interpretar dibujos cuando el solo sabe interpretar sus figuras basicas
 -- El problema es como combinar floating pics devueltas por llamadas recursivas dependiendo del caso recursivo
 -- Como no tenemos acceso constructores, tenemos que usar foldDib
--- No entiendo las formulas geometricas, solo las copie del enunciado :D
-interp :: Output a -> Output (Dibujo a)
-interp interpBas = foldDib interpBas interpRot interpEsp interpRot45 interpApil interpJuntar interpEncim
+-- Las fórmulas geométricas están realizadas con vectores para facilitar las operaciones
+
+-- Output es "Dibujo -> Vector X -> Vector W -> Vector H -> Figura Interpretada"
+
+-- Operaciones del dibujo
 
 interpRot :: FloatingPic -> FloatingPic
 interpRot fp x w h = fp (x V.+ w) h (zero V.- w)
@@ -49,6 +50,9 @@ interpJuntar n m fp gp x w h = pictures [fp x w' h, gp (x V.+ w') (r' V.* w) h]
 
 interpEncim :: FloatingPic -> FloatingPic -> FloatingPic
 interpEncim fp gp x w h = pictures [fp x w h, gp x w h]
+
+interp :: Output a -> Output (Dibujo a)
+interp interpBas = foldDib interpBas interpRot interpEsp interpRot45 interpApil interpJuntar interpEncim
 
 -- Configuración de la interpretación
 -- Basicamente un dibujo
