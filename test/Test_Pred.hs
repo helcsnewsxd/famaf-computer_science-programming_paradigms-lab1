@@ -3,8 +3,8 @@ import Pred
 import Dibujo
 
 -- Para poder utilizar este TEST, se debe ejecutar con el siguiente comando:
--- ghc test/Test_Pred.hs src/Pred.hs src/Dibujo.hs -package HUnit && test/Test_Pred
--- y además comentar las líneas 2 a 21 de Dibujo.sh (lo que oculta la implementación del módulo Dibujo)
+-- ghc test/Test_Pred.hs src/Pred.hs src/Dibujo.hs && test/Test_Pred
+-- y además comentar las líneas 4 a 23 de Dibujo.sh (lo que oculta la implementación del módulo Dibujo)
 
 testPred :: Test
 testPred = test [

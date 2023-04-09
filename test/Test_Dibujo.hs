@@ -2,8 +2,8 @@ import Test.HUnit
 import Dibujo
 
 -- Para poder utilizar este TEST, se debe ejecutar con el siguiente comando:
--- ghc test/Test_Dibujo.hs src/Dibujo.hs -package HUnit && test/Test_Dibujo
--- y además comentar las líneas 2 a 21 de Dibujo.sh (lo que oculta la implementación del módulo Dibujo)
+-- ghc test/Test_Dibujo.hs src/Dibujo.hs && test/Test_Dibujo
+-- y además comentar las líneas 4 a 23 de Dibujo.sh (lo que oculta la implementación del módulo Dibujo)
 
 -- Casos de prueba para la función figura
 testFigura1 = TestCase (assertEqual "figura 1" (Figura 1) (figura 1))
