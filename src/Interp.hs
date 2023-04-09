@@ -8,10 +8,10 @@ module Interp
   )
 where
 
-import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 import Dibujo (Dibujo, foldDib)
 import FloatingPic (FloatingPic, Output, grid, half, zero)
 import Graphics.Gloss (Display (InWindow), Picture, Vector, color, display, makeColorI, pictures, translate, white)
+import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 
 -- Interpretación de un dibujo
 -- Le permite al usuario interpretar dibujos cuando el solo sabe interpretar sus figuras basicas
@@ -40,7 +40,7 @@ interpApil n m fp gp x w h = pictures [fp (x V.+ h') w (r V.* h), gp x w h']
     h' = r' V.* h
 
 interpJuntar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
--- Esta formula de juntar(particularmente como calcula los anchos) hace que 
+-- Esta formula de juntar(particularmente como calcula los anchos) hace que
 -- n se corresponda con la segunda imagen en vez de con la primera, y lo mismo con m y la primera
 interpJuntar n m fp gp x w h = pictures [fp x w' h, gp (x V.+ w') (r' V.* w) h]
   where
