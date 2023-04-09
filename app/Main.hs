@@ -2,6 +2,7 @@ module Main (main) where
 
 import Data.Maybe (fromMaybe)
 import Dibujos.Ejemplo (ejemploConf)
+import Dibujos.Feo (feoConf)
 import Interp (Conf (name), initial)
 import System.Console.GetOpt (ArgDescr (..), ArgOrder (..), OptDescr (..), getOpt)
 import System.Environment (getArgs)
@@ -9,7 +10,7 @@ import Text.Read (readMaybe)
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [ejemploConf]
+configs = [ejemploConf, feoConf]
 
 -- Dibuja el dibujo n
 -- Busca el dibujo
