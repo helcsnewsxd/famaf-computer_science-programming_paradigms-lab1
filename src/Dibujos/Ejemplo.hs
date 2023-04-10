@@ -1,6 +1,5 @@
 module Dibujos.Ejemplo
-  ( interpBas,
-    ejemploConf,
+  ( ejemploConf,
   )
 where
 

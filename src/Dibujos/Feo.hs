@@ -1,8 +1,5 @@
 module Dibujos.Feo
   ( feoConf,
-    BasicaSinColor (..),
-    interpBasicaSinColor,
-    grilla,
   )
 where
 
@@ -10,6 +7,7 @@ import Dibujo (Dibujo, apilar, encimar, espejar, figura, juntar, rot45, rotar)
 import FloatingPic (Output, half, zero)
 import Graphics.Gloss (Picture, blue, color, line, pictures, red, white)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
+import Grilla (grilla)
 import Interp (Conf (..), interp)
 
 -- Les ponemos colorcitos para que no sea _tan_ feo
@@ -96,19 +94,6 @@ flipante1 b = espejar $ juntados2 b
 -- Igual al anterior, pero invertido
 flipante2 :: BasicaSinColor -> Dibujo Basica
 flipante2 b = espejar $ apilados2 b
-
-row :: [Dibujo a] -> Dibujo a
-row [] = error "row: no puede ser vacío"
-row [d] = d
-row (d : ds) = juntar (fromIntegral $ length ds) 1 d (row ds)
-
-column :: [Dibujo a] -> Dibujo a
-column [] = error "column: no puede ser vacío"
-column [d] = d
-column (d : ds) = apilar (fromIntegral $ length ds) 1 d (column ds)
-
-grilla :: [[Dibujo a]] -> Dibujo a
-grilla = column . map row
 
 cruzTangulo :: Dibujo Basica
 cruzTangulo = encimar (figRoja Rectangulo) (figAzul Cruz)
