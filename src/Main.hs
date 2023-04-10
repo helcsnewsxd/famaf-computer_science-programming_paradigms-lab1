@@ -1,5 +1,6 @@
 module Main (main) where
 
+import Dibujos.Grilla (grillaConf)
 import Dibujos.Ejemplo (ejemploConf)
 import Dibujos.Feo (feoConf)
 import Dibujos.Escher (escherConf)
@@ -9,7 +10,7 @@ import System.Environment (getArgs)
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [ejemploConf, feoConf, escherConf]
+configs = [ejemploConf, feoConf, escherConf, grillaConf]
 
 -- Dibuja el dibujo n
 -- Busca el dibujo
