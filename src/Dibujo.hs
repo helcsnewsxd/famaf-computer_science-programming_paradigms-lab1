@@ -65,8 +65,8 @@ encimar :: Dibujo a -> Dibujo a -> Dibujo a
 encimar = Encimar
 
 comp :: (a -> a) -> Int -> a -> a
-comp f 1 x = f x
-comp f n x = comp f (n - 1) (f x)
+comp f 1 = f
+comp f n = f . comp f (n - 1)
 
 -- Rotaciones de múltiplos de 90.
 r180 :: Dibujo a -> Dibujo a
@@ -89,7 +89,7 @@ r270 = comp rotar 3
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto p q r s = (.-.) ((///) p q) ((///) r s)
+cuarteto p q r s = (.-.) ((///) r s) ((///) p q)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
