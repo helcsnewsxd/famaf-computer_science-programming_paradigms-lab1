@@ -2,13 +2,14 @@ module Main (main) where
 
 import Dibujos.Ejemplo (ejemploConf)
 import Dibujos.Feo (feoConf)
+import Dibujos.Escher (escherConf)
 import Interp (Conf (name), initial)
 import System.Console.GetOpt (ArgDescr (..), ArgOrder (..), OptDescr (..), getOpt)
 import System.Environment (getArgs)
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [ejemploConf, feoConf]
+configs = [ejemploConf, feoConf, escherConf]
 
 -- Dibuja el dibujo n
 -- Busca el dibujo
