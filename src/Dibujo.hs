@@ -98,7 +98,7 @@ encimar4 p = (^^^) (r270 p) ((^^^) (r180 p) ((^^^) (comp rotar 1 p) p))
 -- Cuadrado con la misma figura rotada i * 90, para i ∈ {0, ..., 3}.
 -- No confundir con encimar4!
 ciclar :: Dibujo a -> Dibujo a
-ciclar p = cuarteto p (rotar p) (r180 p) (r270 p)
+ciclar p = cuarteto (rotar p) p (r180 p) (r270 p)
 
 -- Estructura general para la semántica
 -- Aplico las funciones a cada "nodo" de la estructura del dibujo para devolver un valor
