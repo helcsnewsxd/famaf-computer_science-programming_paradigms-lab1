@@ -93,7 +93,7 @@ cuarteto p q r s = (.-.) ((///) p q) ((///) r s)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
-encimar4 p = (^^^) (r270 p) ((^^^) (r180 p) ((^^^) (comp rotar 1 p) p))
+encimar4 p = (^^^) (r270 p) $ (^^^) (r180 p) $ (^^^) (rotar p) p
 
 -- Cuadrado con la misma figura rotada i * 90, para i ∈ {0, ..., 3}.
 -- No confundir con encimar4!

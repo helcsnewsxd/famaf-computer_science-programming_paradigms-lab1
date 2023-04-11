@@ -19,7 +19,7 @@ base :: Dibujo Escher
 base = figura True
 
 rbase :: Dibujo Escher
-rbase = rot45 base
+rbase = espejar $ rot45 base
 
 vbase :: Dibujo Escher
 vbase = figura False
@@ -30,7 +30,11 @@ dibujoU = encimar4 rbase
 
 -- El dibujo t.
 dibujoT :: Dibujo Escher
-dibujoT = encimar rbase (r270 rbase)
+dibujoT = encimar base $ encimar base2 base3
+  where
+    base2 = espejar $ rot45 base
+    base3 = r270 base2
+  
 
 -- Esquina con nivel de detalle en base a la figura base.
 esquina :: Int -> Dibujo Escher
@@ -39,11 +43,12 @@ esquina n | n==0 = cuarteto vbase vbase vbase dibujoU
 
 -- Lado con nivel de detalle.
 lado :: Int -> Dibujo Escher
-lado n | n==0 = cuarteto vbase vbase (rotar base) base
-       | otherwise = cuarteto (lado (n-1)) (lado (n-1)) (rotar base) base
-
+lado n | n==0 = cuarteto vbase vbase (rotar dibujoT) dibujoT
+      | otherwise = cuarteto (lado (n-1)) (lado (n-1)) (rotar dibujoT) dibujoT
 -- Arreglo de 9 en grilla
-nonet p q r s t u v w x = grilla [[p, q, r], [s, t, u], [v, w, x]]
+nonet p q r s t u v w x = grilla [[p, q, r], 
+                                  [s, t, u], 
+                                  [v, w, x]]
 
 -- El dibujo de Escher:
 escher :: Int -> Dibujo Escher
@@ -62,7 +67,7 @@ interpBas True a b c = pictures [line $ triangulo a b c, cara a b c]
     cara a b c = polygon $ triangulo (a V.+ half c) (half b) (half c)
 
 dibujito :: Dibujo Escher
-dibujito = escher 1
+dibujito = escher 5
 
 -- Configuración del dibujo de Escher
 escherConf :: Conf
