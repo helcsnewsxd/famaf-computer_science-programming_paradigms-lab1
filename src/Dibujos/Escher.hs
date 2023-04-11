@@ -30,12 +30,8 @@ dibujoU = encimar4 rbase
 
 -- El dibujo t.
 dibujoT :: Dibujo Escher
-dibujoT = encimar base $ encimar base2 base3
-  where
-    base2 = espejar $ rot45 base
-    base3 = r270 base2
+dibujoT = encimar base $ encimar rbase (r270 rbase)
   
-
 -- Esquina con nivel de detalle en base a la figura base.
 esquina :: Int -> Dibujo Escher
 esquina n | n==0 = cuarteto vbase vbase vbase dibujoU
@@ -55,8 +51,8 @@ escher :: Int -> Dibujo Escher
 escher n =
   nonet
     (esquina n) (lado n) (r270 (esquina n))
-    (rotar (lado n )) dibujoU  (r270 (lado n ))
-    (rotar (esquina n )) (r180 (lado n )) (r180 (esquina n ))
+    (rotar (lado n)) dibujoU  (r270 (lado n))
+    (rotar (esquina n)) (r180 (lado n)) (r180 (esquina n))
 
 
 interpBas :: Output Escher
@@ -66,13 +62,10 @@ interpBas True a b c = pictures [line $ triangulo a b c, cara a b c]
     triangulo a b c = map (a V.+) [zero, c, b, zero]
     cara a b c = polygon $ triangulo (a V.+ half c) (half b) (half c)
 
-dibujito :: Dibujo Escher
-dibujito = escher 5
-
 -- Configuración del dibujo de Escher
 escherConf :: Conf
 escherConf =
   Conf
     { name = "Escher",
-      pic = interp interpBas dibujito
+      pic = interp interpBas (escher 5)
     }
