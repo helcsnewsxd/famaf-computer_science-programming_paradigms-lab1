@@ -65,8 +65,8 @@ encimar :: Dibujo a -> Dibujo a -> Dibujo a
 encimar = Encimar
 
 comp :: (a -> a) -> Int -> a -> a
-comp f 1 x = f x
-comp f n x = comp f (n - 1) (f x)
+comp f 1 = f
+comp f n = f . comp f (n - 1)
 
 -- Rotaciones de múltiplos de 90.
 r180 :: Dibujo a -> Dibujo a
@@ -93,12 +93,12 @@ cuarteto p q r s = (.-.) ((///) p q) ((///) r s)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
-encimar4 p = (^^^) (r270 p) ((^^^) (r180 p) ((^^^) (comp rotar 1 p) p))
+encimar4 p = (^^^) (r270 p) $ (^^^) (r180 p) $ (^^^) (rotar p) p
 
 -- Cuadrado con la misma figura rotada i * 90, para i ∈ {0, ..., 3}.
 -- No confundir con encimar4!
 ciclar :: Dibujo a -> Dibujo a
-ciclar p = cuarteto (rotar p) p (r180 p) (r270 p)
+ciclar p = cuarteto p (rotar p) (r180 p) (r270 p)
 
 -- Estructura general para la semántica
 -- Aplico las funciones a cada "nodo" de la estructura del dibujo para devolver un valor
