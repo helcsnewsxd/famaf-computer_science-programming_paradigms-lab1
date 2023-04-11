@@ -89,7 +89,7 @@ r270 = comp rotar 3
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto p q r s = (.-.) ((///) r s) ((///) p q)
+cuarteto p q r s = (.-.) ((///) p q) ((///) r s)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
