@@ -19,7 +19,7 @@ dibujoGrilla' n = map makeRow [0,1..n]
 dibujoGrilla = grilla $ dibujoGrilla' 7
 
 interpBas :: Output Basica
-interpBas tupla (x, y) (wx, _) (_, hy) =  translate x y $ scale 0.15 0.15 $ text $ show tupla
+interpBas tupla (x, y) _ _ =  translate x y $ scale 0.15 0.15 $ text $ show tupla
 
 grillaConf :: Conf
 grillaConf =
