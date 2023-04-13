@@ -4,13 +4,16 @@ import Dibujos.Grilla (grillaConf)
 import Dibujos.Ejemplo (ejemploConf)
 import Dibujos.Feo (feoConf)
 import Dibujos.Escher (escherConf)
+import Dibujos.EscherPeces (escherPecesConf)
 import Interp (Conf (name), initial)
 import System.Console.GetOpt (ArgDescr (..), ArgOrder (..), OptDescr (..), getOpt)
 import System.Environment (getArgs)
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [ejemploConf, feoConf, escherConf, grillaConf]
+configs = [ejemploConf, feoConf, escherConf, grillaConf, escherPecesConf]
+
+size = 900
 
 -- Dibuja el dibujo n
 -- Busca el dibujo
@@ -19,7 +22,7 @@ initial' [] n = do
   putStrLn $ "No hay un dibujo llamado " ++ n
 initial' (c : cs) n =
   if n == name c
-    then initial c 400
+    then initial c size
     else initial' cs n
 
 dibSelect :: IO ()
@@ -30,7 +33,7 @@ dibSelect = do
   n <- getLine
   case confSearch configs n of
     Nothing -> putStrLn "Ese dibujo no existe" >> dibSelect
-    Just c -> initial c 400
+    Just c -> initial c size
   where
     putDibujos [] = return ()
     putDibujos (c : cs) = putStrLn (name c) >> putDibujos cs
