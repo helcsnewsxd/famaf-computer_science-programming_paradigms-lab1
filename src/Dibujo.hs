@@ -6,6 +6,7 @@ module Dibujo
     rotar,
     espejar,
     rot45,
+    escalar,
     apilar,
     juntar,
     encimar,
@@ -38,7 +39,9 @@ data Dibujo a
   | Rot45 (Dibujo a)
   | Apilar Float Float (Dibujo a) (Dibujo a)
   | Juntar Float Float (Dibujo a) (Dibujo a)
+  | Escalar Float Float (Dibujo a)
   | Encimar (Dibujo a) (Dibujo a)
+
   deriving (Eq, Show)
 
 -- Construcción de dibujo. Abstraen los constructores.
@@ -54,6 +57,9 @@ espejar = Espejar
 
 rot45 :: Dibujo a -> Dibujo a
 rot45 = Rot45
+
+escalar :: Float -> Float -> Dibujo a -> Dibujo a
+escalar = Escalar
 
 apilar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
 apilar = Apilar
@@ -112,16 +118,18 @@ foldDib ::
   (b -> b) ->
   (Float -> Float -> b -> b -> b) ->
   (Float -> Float -> b -> b -> b) ->
+  (Float -> Float -> b -> b) ->
   (b -> b -> b) ->
   Dibujo a ->
   b
-foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Figura a) = f_fig a
-foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Rotar a) = f_rot (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a)
-foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Espejar a) = f_esp (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a)
-foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Rot45 a) = f_rot45 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a)
-foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Apilar n1 n2 a b) = f_apil n1 n2 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim b)
-foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Juntar n1 n2 a b) = f_junt n1 n2 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim b)
-foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim (Encimar a b) = f_encim (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_encim b)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Figura a) = f_fig a
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Rotar a) = f_rot (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim a)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Espejar a) = f_esp (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim a)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Rot45 a) = f_rot45 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim a)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Apilar n1 n2 a b) = f_apil n1 n2 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim b)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Juntar n1 n2 a b) = f_junt n1 n2 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim b)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Encimar a b) = f_encim (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim a) (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim b)
+foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim (Escalar n1 n2 a) = f_escal n1 n2 (foldDib f_fig f_rot f_esp f_rot45 f_apil f_junt f_escal f_encim a)
 
 -- Demostrar que `mapDib figura = id`
 -- mapDib aplica la función f a todas las figuras (el dato) del Dibujo a para convertirlo en un dibujo b
@@ -141,5 +149,5 @@ mapDib f (Encimar a b) = Encimar (mapDib f a) (mapDib f b)
 -- (: []) es equivalente a: "Dado a, devuelvo [a]"
 -- (\ _ _ a b -> a++b) es equivalente a: "Dados dos enteros (que no me importan) y dos listas a, b, devuelvo a++b"
 -- (++) es equivalente a: "Dadas dos listas a, b, devuelvo a++b"
-figuras :: Dibujo a -> [a]
-figuras = foldDib (: []) id id id (\ _ _ a b -> a++b) (\ _ _ a b -> a++b) (++)
+-- figuras :: Dibujo a -> [a]
+figuras = foldDib (: []) id id id (\ _ _ a b -> a++b) (\ _ _ a b -> a++b) (\ _ _ l -> l) (++)

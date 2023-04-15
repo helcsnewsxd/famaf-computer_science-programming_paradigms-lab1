@@ -51,8 +51,11 @@ interpJuntar n m fp gp x w h = pictures [fp x w' h, gp (x V.+ w') (r' V.* w) h]
 interpEncim :: FloatingPic -> FloatingPic -> FloatingPic
 interpEncim fp gp x w h = pictures [fp x w h, gp x w h]
 
+interpEscal :: Float -> Float -> FloatingPic -> FloatingPic
+interpEscal rw rh fp x w h = fp x (rw V.* w) (rh V.* h)
+
 interp :: Output a -> Output (Dibujo a)
-interp interpBas = foldDib interpBas interpRot interpEsp interpRot45 interpApil interpJuntar interpEncim
+interp interpBas = foldDib interpBas interpRot interpEsp interpRot45 interpApil interpJuntar interpEscal interpEncim
 
 -- Configuración de la interpretación
 -- Basicamente un dibujo

@@ -13,7 +13,7 @@ import System.Environment (getArgs)
 configs :: [Conf]
 configs = [ejemploConf, feoConf, escherConf, grillaConf, escherPecesConf]
 
-size = 900
+size = 700
 
 -- Dibuja el dibujo n
 -- Busca el dibujo

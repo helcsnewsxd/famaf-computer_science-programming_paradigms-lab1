@@ -28,14 +28,14 @@ cambiar pred_a f = mapDib f_fig
 -- Las funciones lambda se encargan de hacer el or correspondiente para chequear que
 -- se cumpla en TODAS las figuras
 anyDib :: Pred a -> Dibujo a -> Bool
-anyDib f_pred = foldDib f_pred id id id (\ _ _ a b -> a||b) (\ _ _ a b -> a||b) (||)
+anyDib f_pred = foldDib f_pred id id id (\ _ _ a b -> a||b) (\ _ _ a b -> a||b) (\ _ _ a -> a) (||)
 
 -- Todas las básicas satisfacen el predicado.
 -- Se aplica la función f_pred en cada Figura del Dibujo a
 -- Las demás funciones lambda se encargan de hacer el and correspondiente
 -- para chequear que se cumpla en TODAS las figuras
 allDib :: Pred a -> Dibujo a -> Bool
-allDib f_pred = foldDib f_pred id id id (\ _ _ a b -> a&&b) (\ _ _ a b -> a&&b) (&&)
+allDib f_pred = foldDib f_pred id id id (\ _ _ a b -> a&&b) (\ _ _ a b -> a&&b) (\ _ _ a -> a) (&&)
 
 -- Los dos predicados se cumplen para el elemento recibido.
 -- andP :: Pred a -> Pred a -> a -> Bool
