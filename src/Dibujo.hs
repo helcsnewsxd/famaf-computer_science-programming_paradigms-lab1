@@ -142,6 +142,7 @@ mapDib f (Espejar a) = Espejar (mapDib f a)
 mapDib f (Rot45 a) = Rot45 (mapDib f a)
 mapDib f (Apilar p1 p2 a b) = Apilar p1 p2 (mapDib f a) (mapDib f b)
 mapDib f (Juntar p1 p2 a b) = Juntar p1 p2 (mapDib f a) (mapDib f b)
+mapDib f (Escalar p1 p2 a) = Escalar p1 p2 (mapDib f a)
 mapDib f (Encimar a b) = Encimar (mapDib f a) (mapDib f b)
 
 -- Junta todas las figuras básicas de un dibujo.
