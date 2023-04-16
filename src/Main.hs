@@ -2,6 +2,7 @@ module Main (main) where
 
 import Dibujos.Grilla (grillaConf)
 import Dibujos.Ejemplo (ejemploConf)
+import Dibujos.EjemploEscalar (ejemploEscalarConf)
 import Dibujos.Feo (feoConf)
 import Dibujos.Escher (escherConf)
 import Dibujos.EscherPeces (escherPecesConf)
@@ -11,7 +12,7 @@ import System.Environment (getArgs)
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [ejemploConf, feoConf, escherConf, grillaConf, escherPecesConf]
+configs = [ejemploConf, feoConf, escherConf, grillaConf, escherPecesConf, ejemploEscalarConf]
 
 size = 700
 
