@@ -3,100 +3,187 @@ import Dibujo
 
 -- Para poder utilizar este TEST, se debe ejecutar con el siguiente comando:
 -- ghc test/Test_Dibujo.hs src/Dibujo.hs && test/Test_Dibujo
--- y además comentar las líneas 4 a 23 de Dibujo.sh (lo que oculta la implementación del módulo Dibujo)
+-- y además comentar las líneas 4 a 24 de Dibujo.sh (lo que oculta la implementación del módulo Dibujo)
 
--- Casos de prueba para la función figura
-testFigura1 = TestCase (assertEqual "figura 1" (Figura 1) (figura 1))
-testFigura2 = TestCase (assertEqual "figura 'a'" (Figura 'a') (figura 'a'))
+-- Tipos de figuras
+data Fig = Rectangulo | Circulo | Triangulo | Cuadrado | Cono deriving (Eq, Show)
 
--- Casos de prueba para la función rotar
-testRotar1 = TestCase (assertEqual "rotar (figura 1)" (Rotar (Figura 1)) (rotar (Figura 1)))
-testRotar2 = TestCase (assertEqual "rotar (Rotar (Figura 'a'))" (Rotar (Rotar (Figura 'a'))) (rotar (Rotar (Figura 'a'))))
+-- Test figura
+test_figura = TestCase (assertEqual "figura" (Figura Rectangulo) (figura Rectangulo))
 
--- Casos de prueba para la función espejar
-testEspejar1 = TestCase (assertEqual "espejar (figura 1)" (Espejar (Figura 1)) (espejar (Figura 1)))
-testEspejar2 = TestCase (assertEqual "espejar (Rotar (Figura 'a'))" (Espejar (Rotar (Figura 'a'))) (espejar (Rotar (Figura 'a'))))
+-- Test rotar
+test_rotar = TestCase (assertEqual "rotar" (Rotar (Figura Rectangulo)) (rotar (Figura Rectangulo)))
+test_rotar1 = TestCase (assertEqual "rotar1" (Rotar (Rotar (Figura Rectangulo))) (rotar (rotar (Figura Rectangulo))))
+test_rotar2 = TestCase (assertEqual "rotar2" (Rotar (Rotar (Rotar (Figura Rectangulo)))) (rotar (rotar (rotar (Figura Rectangulo)))))
 
--- Casos de prueba para la función rot45
-testRot45_1 = TestCase (assertEqual "rot45 (figura 1)" (Rot45 (Figura 1)) (rot45 (Figura 1)))
-testRot45_2 = TestCase (assertEqual "rot45 (Rotar (Figura 'a'))" (Rot45 (Rotar (Figura 'a'))) (rot45 (Rotar (Figura 'a'))))
+-- Test espejar
+test_espejar = TestCase (assertEqual "espejar" (Espejar (Figura Rectangulo)) (espejar (Figura Rectangulo)))
+test_espejar1 = TestCase (assertEqual "espejar1" (Espejar (Espejar (Figura Rectangulo))) (espejar (espejar (Figura Rectangulo))))
+test_espejar2 = TestCase (assertEqual "espejar2" (Espejar (Espejar (Espejar (Figura Rectangulo)))) (espejar (espejar (espejar (Figura Rectangulo)))))
 
--- Casos de prueba para la función apilar
-testApilar1 = TestCase (assertEqual "apilar 1 2 (figura 1) (figura 2)" (Apilar 1 2 (Figura 1) (Figura 2)) (apilar 1 2 (Figura 1) (Figura 2)))
-testApilar2 = TestCase (assertEqual "apilar 0.5 0.5 (Rotar (Figura 1)) (Espejar (Figura 2))" (Apilar 0.5 0.5 (Rotar (Figura 1)) (Espejar (Figura 2))) (apilar 0.5 0.5 (Rotar (Figura 1)) (Espejar (Figura 2))))
+-- Test rot45
+test_rot45 = TestCase (assertEqual "rot45" (Rot45 (Figura Rectangulo)) (rot45 (Figura Rectangulo)))
+test_rot451 = TestCase (assertEqual "rot451" (Rot45 (Rot45 (Figura Rectangulo))) (rot45 (rot45 (Figura Rectangulo))))
+test_rot452 = TestCase (assertEqual "rot452" (Rot45 (Rot45 (Rot45 (Figura Rectangulo)))) (rot45 (rot45 (rot45 (Figura Rectangulo)))))
 
--- Casos de prueba para la función juntar
-testJuntar1 = TestCase (assertEqual "juntar 1 2 (figura 1) (figura 2)" (Juntar 1 2 (Figura 1) (Figura 2)) (juntar 1 2 (Figura 1) (Figura 2)))
-testJuntar2 = TestCase (assertEqual "juntar 0.5 0.5 (Rotar (Figura 1)) (Espejar (Figura 2))" (Juntar 0.5 0.5 (Rotar (Figura 1)) (Espejar (Figura 2))) (juntar 0.5 0.5 (Rotar (Figura 1)) (Espejar (Figura 2))))
+-- Test escalar
+test_escalar = TestCase (assertEqual "escalar" (Escalar 2 2 (Figura Rectangulo)) (escalar 2 2 (Figura Rectangulo)))
+test_escalar1 = TestCase (assertEqual "escalar1" (Escalar 2 2 (Escalar 2 2 (Figura Rectangulo))) (escalar 2 2 (escalar 2 2 (Figura Rectangulo))))
+test_escalar2 = TestCase (assertEqual "escalar2" (Escalar 2 2 (Escalar 2 2 (Escalar 2 2 (Figura Rectangulo)))) (escalar 2 2 (escalar 2 2 (escalar 2 2 (Figura Rectangulo)))))
 
--- Casos de prueba para la función encimar
-testEncimar1 = TestCase (assertEqual "encimar (figura 1) (figura 2)" (Encimar (Figura 1) (Figura 2)) (encimar (Figura 1) (Figura 2)))
-testEncimar2 = TestCase (assertEqual "encimar (Rotar (Figura 1)) (Espejar (Figura 2))" (Encimar (Rotar (Figura 1)) (Espejar (Figura 2))) (encimar (Rotar (Figura 1)) (Espejar (Figura 2))))
+-- Test apilar
+test_apilar = TestCase (assertEqual "apilar" (Apilar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (apilar 2 2 (Figura Rectangulo) (Figura Rectangulo)))
+test_apilar1 = TestCase (assertEqual "apilar1" (Apilar 2 2 (Apilar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (apilar 2 2 (apilar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)))
+test_apilar2 = TestCase (assertEqual "apilar2" (Apilar 2 2 (Apilar 2 2 (Apilar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)) (apilar 2 2 (apilar 2 2 (apilar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)))
 
--- Casos de prueba para la función comp
-testComp1 = TestCase (assertEqual "comp (+1) 1 1" 2 (comp (+1) 1 1))
-testComp2 = TestCase (assertEqual "comp (+1) 1 2" 3 (comp (+1) 1 2))
+-- Test juntar
+test_juntar = TestCase (assertEqual "juntar" (Juntar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (juntar 2 2 (Figura Rectangulo) (Figura Rectangulo)))
+test_juntar1 = TestCase (assertEqual "juntar1" (Juntar 2 2 (Juntar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (juntar 2 2 (juntar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)))
+test_juntar2 = TestCase (assertEqual "juntar2" (Juntar 2 2 (Juntar 2 2 (Juntar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)) (juntar 2 2 (juntar 2 2 (juntar 2 2 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)))
 
--- Casos de prueba para la función r180
-testR180_1 = TestCase (assertEqual "r180 (figura 1)" (Rotar (Rotar (Figura 1))) (r180 (Figura 1)))
-testR180_2 = TestCase (assertEqual "r180 (Rotar (Figura 1))" (Rotar (Rotar (Rotar (Figura 1)))) (r180 (Rotar (Figura 1))))
+-- Test encimar
+test_encimar = TestCase (assertEqual "encimar" (Encimar (Figura Rectangulo) (Figura Rectangulo)) (encimar (Figura Rectangulo) (Figura Rectangulo)))
+test_encimar1 = TestCase (assertEqual "encimar1" (Encimar (Encimar (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (encimar (encimar (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)))
+test_encimar2 = TestCase (assertEqual "encimar2" (Encimar (Encimar (Encimar (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)) (encimar (encimar (encimar (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)))
 
--- Casos de prueba para la función r270
-testR270_1 = TestCase (assertEqual "r270 (figura 1)" (Rotar (Rotar (Rotar (Figura 1)))) (r270 (Figura 1)))
-testR270_2 = TestCase (assertEqual "r270 (Rotar (Figura 1))" (Rotar (Rotar (Rotar (Rotar (Figura 1))))) (r270 (Rotar (Figura 1))))
+-- Test r180
+test_r180 = TestCase (assertEqual "r180" (Rotar (Rotar (Figura Rectangulo))) (r180 (Figura Rectangulo)))
+test_r1801 = TestCase (assertEqual "r1801" (Rotar (Rotar (Rotar (Rotar (Figura Rectangulo))))) (r180 (r180 (Figura Rectangulo))))
+test_r1802 = TestCase (assertEqual "r1802" (Rotar (Rotar (Rotar (Rotar (Rotar (Rotar (Figura Rectangulo))))))) (r180 (r180 (r180 (Figura Rectangulo)))))
 
--- Casos de prueba para la función (.-.)
-testPunto_1 = TestCase (assertEqual "figura 1 .-. figura 2" (Apilar 1 1 (Figura 1) (Figura 2)) (figura 1 .-. figura 2))
-testPunto_2 = TestCase (assertEqual "figura 1 .-. Rotar (Figura 2)" (Apilar 1 1 (Figura 1) (Rotar (Figura 2))) (figura 1 .-. Rotar (Figura 2)))
+-- Test r270
+test_r270 = TestCase (assertEqual "r270" (Rotar (Rotar (Rotar (Figura Rectangulo)))) (r270 (Figura Rectangulo)))
+test_r2701 = TestCase (assertEqual "r2701" (Rotar (Rotar (Rotar (Rotar (Rotar (Rotar (Figura Rectangulo))))))) (r270 (r270 (Figura Rectangulo))))
+test_r2702 = TestCase (assertEqual "r2702" (Rotar (Rotar (Rotar (Rotar (Rotar (Rotar (Rotar (Rotar (Rotar (Figura Rectangulo)))))))))) (r270 (r270 (r270 (Figura Rectangulo)))))
 
--- Casos de prueba para la función (///)
-testBarra_1 = TestCase (assertEqual "figura 1 /// figura 2" (Juntar 1 1 (Figura 1) (Figura 2)) (figura 1 /// figura 2))
-testBarra_2 = TestCase (assertEqual "figura 1 /// Rotar (Figura 2)" (Juntar 1 1 (Figura 1) (Rotar (Figura 2))) (figura 1 /// Rotar (Figura 2)))
+-- Test (.-.)
+test_apilar_sin_escalar = TestCase (assertEqual "apilar sin escalar" (Apilar 1 1 (Figura Rectangulo) (Figura Rectangulo)) ((.-.) (Figura Rectangulo) (Figura Rectangulo)))
+test_apilar_sin_escalar1 = TestCase (assertEqual "apilar sin escalar1" (Apilar 1 1 (Apilar 1 1 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) ((.-.) ((.-.) (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)))
+test_apilar_sin_escalar2 = TestCase (assertEqual "apilar sin escalar2" (Apilar 1 1 (Apilar 1 1 (Apilar 1 1 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)) ((.-.) ((.-.) ((.-.) (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)))
 
--- Casos de prueba para la función (^^^)
-testCircunflejo_1 = TestCase (assertEqual "figura 1 ^^^ figura 2" (Encimar (Figura 1) (Figura 2)) (figura 1 ^^^ figura 2))
-testCircunflejo_2 = TestCase (assertEqual "figura 1 ^^^ Rotar (Figura 2)" (Encimar (Figura 1) (Rotar (Figura 2))) (figura 1 ^^^ Rotar (Figura 2)))
+-- Test (///)
+test_juntar_sin_escalar = TestCase (assertEqual "juntar sin escalar" (Juntar 1 1 (Figura Rectangulo) (Figura Rectangulo)) ((///) (Figura Rectangulo) (Figura Rectangulo)))
+test_juntar_sin_escalar1 = TestCase (assertEqual "juntar sin escalar1" (Juntar 1 1 (Juntar 1 1 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) ((///) ((///) (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)))
+test_juntar_sin_escalar2 = TestCase (assertEqual "juntar sin escalar2" (Juntar 1 1 (Juntar 1 1 (Juntar 1 1 (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)) ((///) ((///) ((///) (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)))
 
--- Casos de prueba para la función cuarteto
-testCuarteto1 = TestCase (assertEqual "cuarteto (figura 1) (figura 2) (figura 3) (figura 4)" (Apilar 1 1 (Juntar 1 1 (Figura 1) (Figura 2)) (Juntar 1 1 (Figura 3) (Figura 4))) (cuarteto (figura 1) (figura 2) (figura 3) (figura 4)))
-testCuarteto2 = TestCase (assertEqual "cuarteto (Rotar (Figura 1)) (Espejar (Figura 2)) (Rotar (Espejar (Figura 3))) (Espejar (Rotar (Figura 4)))" (Apilar 1 1 (Juntar 1 1 (Rotar (Figura 1)) (Espejar (Figura 2))) (Juntar 1 1 (Rotar (Espejar (Figura 3))) (Espejar (Rotar (Figura 4))))) (cuarteto (Rotar (Figura 1)) (Espejar (Figura 2)) (Rotar (Espejar (Figura 3))) (Espejar (Rotar (Figura 4)))))
+-- Test (^^^)
+test_encimar_0 = TestCase (assertEqual "encimar_0" (Encimar (Figura Rectangulo) (Figura Rectangulo)) ((^^^) (Figura Rectangulo) (Figura Rectangulo)))
+test_encimar_1 = TestCase (assertEqual "encimar_1" (Encimar (Encimar (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) ((^^^) ((^^^) (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)))
+test_encimar_2 = TestCase (assertEqual "encimar_2" (Encimar (Encimar (Encimar (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)) ((^^^) ((^^^) ((^^^) (Figura Rectangulo) (Figura Rectangulo)) (Figura Rectangulo)) (Figura Rectangulo)))
 
--- Casos de prueba para la función encimar4
-testEncimar41 = TestCase (assertEqual "encimar4 (figura 1)" (Encimar (Rotar (Rotar (Rotar (Figura 1)))) (Encimar (Rotar (Rotar (Figura 1))) (Encimar (Rotar (Figura 1)) (Figura 1)))) (encimar4 (figura 1)))
-testEncimar42 = TestCase (assertEqual "encimar4 (Rotar (Figura 1))" (Encimar (Rotar (Rotar (Rotar (Rotar (Figura 1))))) (Encimar (Rotar (Rotar (Rotar (Figura 1)))) (Encimar (Rotar (Rotar (Figura 1))) (Rotar (Figura 1))))) (encimar4 (Rotar (Figura 1))))
+-- Test cuarteto
+test_cuarteto = TestCase (assertEqual "cuarteto" (Apilar 1 1 (Juntar 1 1 (Figura Rectangulo) (Figura Triangulo)) (Juntar 1 1 (Figura Circulo) (Figura Cono))) (cuarteto (Figura Rectangulo) (Figura Triangulo) (Figura Circulo) (Figura Cono)))
 
--- Casos de prueba para la función ciclar
-testCiclar1 = TestCase (assertEqual "ciclar (figura 1)" (Apilar 1.0 1.0 (Juntar 1.0 1.0 (Figura 1) (Rotar (Figura 1))) (Juntar 1.0 1.0 (Rotar (Rotar (Figura 1))) (Rotar (Rotar (Rotar (Figura 1)))))) (ciclar (figura 1)))
-testCiclar2 = TestCase (assertEqual "ciclar (Rotar (Figura 1))" (Apilar 1.0 1.0 (Juntar 1.0 1.0 (Rotar (Figura 1)) (Rotar (Rotar (Figura 1)))) (Juntar 1.0 1.0 (Rotar (Rotar (Rotar (Figura 1)))) (Rotar (Rotar (Rotar (Rotar (Figura 1))))))) (ciclar (Rotar (Figura 1))))
+-- Test encimar4
+test_encimar4_0 = TestCase (assertEqual "encimar4_0" (Encimar (Rotar (Rotar (Rotar (Figura Rectangulo)))) (Encimar (Rotar (Rotar (Figura Rectangulo))) (Encimar (Rotar (Figura Rectangulo)) (Figura Rectangulo)))) (encimar4 (Figura Rectangulo)))
 
--- Casos de prueba para la función foldDib
-testFoldDib1 = TestCase (assertEqual "foldDib id id id id (_ _ a b -> a+b) (_ _ a b -> a+b) (+) (figura 1)" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (+) (Figura 1)))
-testFoldDib2 = TestCase (assertEqual "foldDib id id id id (_ _ a b -> a+b) (_ _ a b -> a+b) (+) (Rotar (Figura 1))" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (+) (Rotar (Figura 1))))
-testFoldDib3 = TestCase (assertEqual "foldDib id id id id (_ _ a b -> a+b) (_ _ a b -> a+b) (+) (Espejar (Figura 1))" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (+) (Espejar (Figura 1))))
-testFoldDib4 = TestCase (assertEqual "foldDib id id id id (_ _ a b -> a+b) (_ _ a b -> a+b) (+) (Rot45 (Figura 1))" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (+) (Rot45 (Figura 1))))
-testFoldDib5 = TestCase (assertEqual "foldDib id id id id (_ _ a b -> a+b) (_ _ a b -> a+b) (+) (Juntar 1 1 (Figura 1) (Figura 2))" 3 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (+) (Juntar 1 1 (Figura 1) (Figura 2))))
-testFoldDib6 = TestCase (assertEqual "foldDib id id id id (_ _ a b -> a+b) (_ _ a b -> a+b) (+) (Apilar 1 1 (Figura 1) (Figura 2))" 3 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (+) (Apilar 1 1 (Figura 1) (Figura 2))))
-testFoldDib7 = TestCase (assertEqual "foldDib id id id id (_ _ a b -> a+b) (_ _ a b -> a+b) (+) (Encimar (Figura 1) (Figura 2))" 3 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (+) (Encimar (Figura 1) (Figura 2))))
+-- Test ciclar
+test_ciclar_0 = TestCase (assertEqual "ciclar_0" (Apilar 1 1 (Juntar 1 1 (Figura Rectangulo) (Rotar (Figura Rectangulo))) (Juntar 1 1 (Rotar (Rotar (Figura Rectangulo))) (Rotar (Rotar (Rotar (Figura Rectangulo)))))) (ciclar (Figura Rectangulo)))
 
--- Casos de prueba para la función mapDib
-testMapDib1 = TestCase (assertEqual "mapDib figura (figura 1)" (Figura 1) (mapDib figura (Figura 1)))
-testMapDib2 = TestCase (assertEqual "mapDib figura (Rotar (Figura 1))" (Rotar (Figura 1)) (mapDib figura (Rotar (Figura 1))))
-testMapDib3 = TestCase (assertEqual "mapDib figura (Espejar (Figura 1))" (Espejar (Figura 1)) (mapDib figura (Espejar (Figura 1))))
-testMapDib4 = TestCase (assertEqual "mapDib figura (Rot45 (Figura 1))" (Rot45 (Figura 1)) (mapDib figura (Rot45 (Figura 1))))
-testMapDib5 = TestCase (assertEqual "mapDib (a -> a*a) (Juntar 1 2 (Figura 1) (Figura 2))" (Juntar 1 2 (Figura 1) (Figura 4)) (mapDib (\a -> figura (a*a)) (Juntar 1 2 (Figura 1) (Figura 2))))
-testMapDib6 = TestCase (assertEqual "mapDib (a -> a*a) (Apilar 1 2 (Figura 1) (Figura 2))" (Apilar 1 2 (Figura 1) (Figura 4)) (mapDib (\a -> figura (a*a)) (Apilar 1 2 (Figura 1) (Figura 2))))
-testMapDib7 = TestCase (assertEqual "mapDib (a -> a*a+a) (Encimar (Figura 1) (Figura 2))" (Encimar (Figura 2) (Figura 6)) (mapDib (\a -> figura (a*a+a)) (Encimar (Figura 1) (Figura 2))))
+-- Test mezclando las anteriores
+test_mezcla0 = TestCase (assertEqual "mezcla0" (Apilar 1 1 (Juntar 1 1 (Figura Rectangulo) (Rotar (Figura Rectangulo))) (Juntar 1 1 (Rotar (Rotar (Figura Rectangulo))) (Rotar (Rotar (Rotar (Figura Rectangulo)))))) (ciclar (figura Rectangulo)))
+test_mezcla1 = TestCase (assertEqual "mezcla1" (Rotar (Encimar (Juntar 1 0.5 (Figura Rectangulo) (Figura Triangulo)) (Rotar (Figura Cuadrado)))) (rotar (encimar (juntar 1 0.5 (figura Rectangulo) (figura Triangulo)) (rotar (figura Cuadrado)))))
+test_mezcla2 = TestCase (assertEqual "mezcla2" (Encimar (Juntar 1 0.5 (Figura Rectangulo) (Figura Triangulo)) (Rotar (Figura Cuadrado))) (encimar (juntar 1 0.5 (figura Rectangulo) (figura Triangulo)) (rotar (figura Cuadrado))))
+test_mezcla3 = TestCase (assertEqual "mezcla3" (Apilar 1 0.5 (Figura Rectangulo) (Figura Triangulo)) (apilar 1 0.5 (figura Rectangulo) (figura Triangulo)))
+test_mezcla4 = TestCase (assertEqual "mezcla4" (Juntar 1 0.5 (Figura Rectangulo) (Figura Triangulo)) (juntar 1 0.5 (figura Rectangulo) (figura Triangulo)))
+test_mezcla5 = TestCase (assertEqual "mezcla5" (Rotar (Figura Rectangulo)) (rotar (figura Rectangulo)))
+test_mezcla6 = TestCase (assertEqual "mezcla6" (Escalar 0.5 0.8 (Figura Rectangulo)) (escalar 0.5 0.8 (figura Rectangulo)))
 
--- Casos de prueba para la función figuras
-testFiguras1 = TestCase (assertEqual "figuras (figura 1)" [1] (figuras (Figura 1)))
-testFiguras2 = TestCase (assertEqual "figuras (Rotar (Figura 1))" [1] (figuras (Rotar (Figura 1))))
-testFiguras3 = TestCase (assertEqual "figuras (Espejar (Figura 1))" [1] (figuras (Espejar (Figura 1))))
-testFiguras4 = TestCase (assertEqual "figuras (Rot45 (Figura 1))" [1] (figuras (Rot45 (Figura 1))))
-testFiguras5 = TestCase (assertEqual "figuras (Juntar 1 2 (Figura 1) (Figura 2))" [1,2] (figuras (Juntar 1 2 (Figura 1) (Figura 2))))
-testFiguras6 = TestCase (assertEqual "figuras (Apilar 1 2 (Figura 1) (Figura 2))" [1,2] (figuras (Apilar 1 2 (Figura 1) (Figura 2))))
-testFiguras7 = TestCase (assertEqual "figuras (Encimar (Figura 1) (Figura 2))" [1,2] (figuras (Encimar (Figura 1) (Figura 2))))
+-- Test de foldDib
+test_fold_dib1 = TestCase (assertEqual "test_fold_dib1" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (\_ _ a -> a) (+) (Figura 1)))
+test_fold_dib2 = TestCase (assertEqual "test_fold_dib2" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (\_ _ a -> a) (+) (Rotar (Figura 1))))
+test_fold_dib3 = TestCase (assertEqual "test_fold_dib3" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (\_ _ a -> a) (+) (Espejar (Figura 1))))
+test_fold_dib4 = TestCase (assertEqual "test_fold_dib4" 1 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (\_ _ a -> a) (+) (Rot45 (Figura 1))))
+test_fold_dib5 = TestCase (assertEqual "test_fold_dib5" 3 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (\_ _ a -> a) (+) (Juntar 1 1 (Figura 1) (Figura 2))))
+test_fold_dib6 = TestCase (assertEqual "test_fold_dib6" 3 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (\_ _ a -> a) (+) (Apilar 1 1 (Figura 1) (Figura 2))))
+test_fold_dib7 = TestCase (assertEqual "test_fold_dib7" 3 (foldDib id id id id (\_ _ a b -> a+b) (\_ _ a b -> a+b) (\_ _ a -> a) (+) (Encimar (Figura 1) (Figura 2))))
 
-runTest = runTestTT $ TestList [testFigura1, testFigura2, testRotar1, testRotar2, testEspejar1, testEspejar2, testRot45_1, testRot45_2, testApilar1, testApilar2, testEncimar1, testEncimar2, testComp1, testComp2, testR180_1, testR180_2, testR270_1, testR270_2, testPunto_1, testPunto_2, testBarra_1, testBarra_2, testCircunflejo_1, testCircunflejo_2, testCuarteto1, testCuarteto2, testEncimar41, testEncimar42, testCiclar1, testCiclar2, testFoldDib1, testFoldDib2, testFoldDib3, testFoldDib4, testFoldDib5, testFoldDib6, testFoldDib7, testMapDib1, testMapDib2, testMapDib3, testMapDib4, testMapDib5, testMapDib6, testMapDib7, testFiguras1, testFiguras2, testFiguras3, testFiguras4, testFiguras5, testFiguras6, testFiguras7]
+-- Test de mapDib
+test_map_dib1 = TestCase (assertEqual "test_map_dib1" (Figura 1) (mapDib figura (Figura 1)))
+test_map_dib2 = TestCase (assertEqual "test_map_dib2" (Rotar (Figura 1)) (mapDib figura (Rotar (Figura 1))))
+test_map_dib3 = TestCase (assertEqual "test_map_dib3" (Espejar (Figura 1)) (mapDib figura (Espejar (Figura 1))))
+test_map_dib4 = TestCase (assertEqual "test_map_dib4" (Rot45 (Figura 1)) (mapDib figura (Rot45 (Figura 1))))
+test_map_dib5 = TestCase (assertEqual "test_map_dib5" (Juntar 1 2 (Figura 1) (Figura 4)) (mapDib (\a -> figura (a*a)) (Juntar 1 2 (Figura 1) (Figura 2))))
+test_map_dib6 = TestCase (assertEqual "test_map_dib6" (Apilar 1 2 (Figura 1) (Figura 4)) (mapDib (\a -> figura (a*a)) (Apilar 1 2 (Figura 1) (Figura 2))))
+test_map_dib7 = TestCase (assertEqual "test_map_dib7" (Encimar (Figura 2) (Figura 6)) (mapDib (\a -> figura (a*a+a)) (Encimar (Figura 1) (Figura 2))))
 
--- Ejecutar los casos de prueba
-main = runTest
+-- Test figuras
+test_figuras1 = TestCase (assertEqual "test_figuras1" [1] (figuras (Figura 1)))
+test_figuras2 = TestCase (assertEqual "test_figuras2" [1] (figuras (Rotar (Figura 1))))
+test_figuras3 = TestCase (assertEqual "test_figuras3" [1] (figuras (Espejar (Figura 1))))
+test_figuras4 = TestCase (assertEqual "test_figuras4" [1] (figuras (Rot45 (Figura 1))))
+test_figuras5 = TestCase (assertEqual "test_figuras5" [1,2] (figuras (Juntar 1 2 (Figura 1) (Figura 2))))
+test_figuras6 = TestCase (assertEqual "test_figuras6" [1,2] (figuras (Apilar 1 2 (Figura 1) (Figura 2))))
+test_figuras7 = TestCase (assertEqual "test_figuras7" [1,2] (figuras (Encimar (Figura 1) (Figura 2))))
+
+-- Ejecutar TODOS los casos de prueba
+tests = TestList [TestLabel "test_figura" test_figura,
+                  TestLabel "test_rotar" test_rotar,
+                    TestLabel "test_rotar1" test_rotar1,
+                    TestLabel "test_rotar2" test_rotar2,
+                  TestLabel "test_espejar" test_espejar,
+                    TestLabel "test_espejar1" test_espejar1,
+                    TestLabel "test_espejar2" test_espejar2,
+                  TestLabel "test_rot45" test_rot45,
+                    TestLabel "test_rot451" test_rot451,
+                    TestLabel "test_rot452" test_rot452,
+                  TestLabel "test_escalar" test_escalar,
+                    TestLabel "test_escalar1" test_escalar1,
+                    TestLabel "test_escalar2" test_escalar2,
+                  TestLabel "test_apilar" test_apilar,
+                    TestLabel "test_apilar1" test_apilar1,
+                    TestLabel "test_apilar2" test_apilar2,
+                  TestLabel "test_juntar" test_juntar,
+                    TestLabel "test_juntar1" test_juntar1,
+                    TestLabel "test_juntar2" test_juntar2,
+                  TestLabel "test_encimar" test_encimar,
+                    TestLabel "test_encimar1" test_encimar1,
+                    TestLabel "test_encimar2" test_encimar2,
+                  TestLabel "test_r180" test_r180,
+                    TestLabel "test_r1801" test_r1801,
+                    TestLabel "test_r1802" test_r1802,
+                  TestLabel "test_r270" test_r270,
+                    TestLabel "test_r2701" test_r2701,
+                    TestLabel "test_r2702" test_r2702,
+                  TestLabel "test_apilar_sin_escalar" test_apilar_sin_escalar,
+                    TestLabel "test_apilar_sin_escalar1" test_apilar_sin_escalar1,
+                    TestLabel "test_apilar_sin_escalar2" test_apilar_sin_escalar2,
+                  TestLabel "test_juntar_sin_escalar" test_juntar_sin_escalar,
+                    TestLabel "test_juntar_sin_escalar1" test_juntar_sin_escalar1,
+                    TestLabel "test_juntar_sin_escalar2" test_juntar_sin_escalar2,
+                  TestLabel "test_encimar_0" test_encimar_0,
+                    TestLabel "test_encimar_1" test_encimar_1,
+                    TestLabel "test_encimar_2" test_encimar_2,
+                  TestLabel "test_cuarteto" test_cuarteto,
+                  TestLabel "test_encimar4_0" test_encimar4_0,
+                  TestLabel "test_ciclar_0" test_ciclar_0,
+                  TestLabel "test_mezcla0" test_mezcla0,
+                    TestLabel "test_mezcla1" test_mezcla1,
+                    TestLabel "test_mezcla2" test_mezcla2,
+                    TestLabel "test_mezcla3" test_mezcla3,
+                    TestLabel "test_mezcla4" test_mezcla4,
+                    TestLabel "test_mezcla5" test_mezcla5,
+                    TestLabel "test_mezcla6" test_mezcla6,
+                  TestLabel "test_fold_dib1" test_fold_dib1,
+                    TestLabel "test_fold_dib2" test_fold_dib2,
+                    TestLabel "test_fold_dib3" test_fold_dib3,
+                    TestLabel "test_fold_dib4" test_fold_dib4,
+                    TestLabel "test_fold_dib5" test_fold_dib5,
+                    TestLabel "test_fold_dib6" test_fold_dib6,
+                    TestLabel "test_fold_dib7" test_fold_dib7,
+                  TestLabel "test_map_dib1" test_map_dib1,
+                    TestLabel "test_map_dib2" test_map_dib2,
+                    TestLabel "test_map_dib3" test_map_dib3,
+                    TestLabel "test_map_dib4" test_map_dib4,
+                    TestLabel "test_map_dib5" test_map_dib5,
+                    TestLabel "test_map_dib6" test_map_dib6,
+                    TestLabel "test_map_dib7" test_map_dib7,
+                  TestLabel "test_figuras1" test_figuras1,
+                    TestLabel "test_figuras2" test_figuras2,
+                    TestLabel "test_figuras3" test_figuras3,
+                    TestLabel "test_figuras4" test_figuras4,
+                    TestLabel "test_figuras5" test_figuras5,
+                    TestLabel "test_figuras6" test_figuras6,
+                    TestLabel "test_figuras7" test_figuras7]
+
+main = runTestTT tests
